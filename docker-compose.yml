@@ -1,24 +1,26 @@
-# Use postgres/example user/password credentials
-version: '3.9'
-
+version: '3.8'
 services:
-
-  db:
-    image: postgres
-    restart: always
-    # set shared memory limit when using docker-compose
-    shm_size: 128mb
-    # or set shared memory limit when deploy via swarm stack
-    #volumes:
-    #  - type: tmpfs
-    #    target: /dev/shm
-    #    tmpfs:
-    #      size: 134217728 # 128*2^20 bytes = 128Mb
+  postgres:
+    image: postgres:13
     environment:
-      POSTGRES_PASSWORD: example
-
-  adminer:
-    image: adminer
-    restart: always
+      POSTGRES_DB: yourdatabase
+      POSTGRES_USER: yourusername
+      POSTGRES_PASSWORD: yourpassword
     ports:
-      - 8080:8080
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/yourdatabase
+      SPRING_DATASOURCE_USERNAME: yourusername
+      SPRING_DATASOURCE_PASSWORD: yourpassword
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
