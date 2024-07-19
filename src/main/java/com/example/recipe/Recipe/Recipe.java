@@ -17,6 +17,7 @@ public class Recipe {
     private Long id;
     @OneToMany
     private List<Ingredients> ingredientsList;
+    private int kcalper100;
 
 
 }

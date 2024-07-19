@@ -11,6 +11,11 @@ import lombok.Setter;
 public class Ingredients {
     @Id
     private Long id;
+    private String imagePath;
+    private int kcalPer100;
+    private int protein;
+    private int carbs;
+    private int fats;
 
 
 }
